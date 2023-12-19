@@ -24,3 +24,8 @@ body {
     justify-content: center; */
   }
   
+  ::-webkit-scrollbar{
+    width: 40px;
+    background:transparent;
+    display: none;
+    }
