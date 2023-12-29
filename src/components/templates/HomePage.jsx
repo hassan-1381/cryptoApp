@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import TableCoin from "../modules/TableCoin";
 import Pagination from "../modules/Pagination";
 import Search from "../modules/Search";
+import Chart from "../modules/Chart";
 import { getCoinList } from "../services/CryptoApi";
 
 export default function HomePage() {
@@ -12,12 +13,13 @@ export default function HomePage() {
   const [loading, setloading] = useState(true);
   const [pagapi, setpageapi] = useState(1);
   const [currency, setcurrency] = useState("usd");
+  const [chart, setchart] = useState(null);
 
   useEffect(() => {
     setloading(true);
     const getApiCoins = async () => {
       try {
-        const res = await fetch(getCoinList(pagapi,currency));
+        const res = await fetch(getCoinList(pagapi, currency));
         const json = await res.json();
         setCoins(json);
         setloading(false);
@@ -26,12 +28,14 @@ export default function HomePage() {
       }
     };
     getApiCoins();
-  }, [pagapi,currency]);
+  }, [pagapi, currency]);
+
   return (
     <>
-      <Search  setcurrency={setcurrency}/>
-      <TableCoin Coins={Coins} loading={loading} />
+      <Search setcurrency={setcurrency} />
+      <TableCoin Coins={Coins} loading={loading} setchart={setchart} />
       <Pagination setpageapi={setpageapi} pagapi={pagapi} />
+      {!!chart && <Chart chart={chart} setchart={setchart} />}
     </>
   );
 }
